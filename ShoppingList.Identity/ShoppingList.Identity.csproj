@@ -6,4 +6,17 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ShoppingList.Application\ShoppingList.Application.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

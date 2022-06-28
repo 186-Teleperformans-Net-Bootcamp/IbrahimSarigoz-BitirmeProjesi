@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShoppingList.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,8 +13,10 @@ namespace ShoppingList.Domain.Entities
 
 
         public bool ItemReceived { get; set; } //Has the item been received? 
-        
-        
-        // adet bilgisi 
+
+        public int Amount { get; set; }
+
+        public Unit Unit { get; set; }
+
     }
 }

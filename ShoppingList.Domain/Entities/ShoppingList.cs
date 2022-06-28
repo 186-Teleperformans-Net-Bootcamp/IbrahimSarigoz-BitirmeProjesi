@@ -10,7 +10,12 @@ namespace ShoppingList.Domain.Entities
     {
         public string ListName { get; set; }
 
-        //kategorisi tamamlandı bilgisi ve Shopping list item koleksiyonu olmalı
+        public Category Category { get; set; }
+
+
+        public bool IsItCompleted { get; set; }
+
+        public List<Item> Items { get; set; }
 
     }
 }
