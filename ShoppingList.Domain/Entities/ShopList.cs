@@ -6,16 +6,20 @@ using System.Threading.Tasks;
 
 namespace ShoppingList.Domain.Entities
 {
-    public class ShoppingList:BaseEntity
+    public class ShopList:BaseEntity
     {
         public string ListName { get; set; }
 
         public Category Category { get; set; }
 
+        public DateTime CreationDate { get; set; }
+
+        public DateTime CompletionDate { get; set; }
 
         public bool IsItCompleted { get; set; }
 
         public List<Item> Items { get; set; }
+
 
     }
 }
