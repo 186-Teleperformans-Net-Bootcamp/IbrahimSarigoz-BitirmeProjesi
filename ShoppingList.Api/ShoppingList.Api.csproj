@@ -8,12 +8,17 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.6">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ShoppingList.Domain\ShoppingList.Domain.csproj" />
-    <ProjectReference Include="..\ShoppingList.Identity\ShoppingList.Identity.csproj" />
+    <ProjectReference Include="..\ShoppingList.Application\ShoppingList.Application.csproj" />
+    <ProjectReference Include="..\ShoppingList.Infrastructure\ShoppingList.Infrastructure.csproj" />
+    <ProjectReference Include="..\ShoppingList.Persistence\ShoppingList.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingList.Application", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShoppingList.Identity", "ShoppingList.Identity\ShoppingList.Identity.csproj", "{5C5F097B-2190-48C2-BA89-A4BA586A9C73}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{DAA2525D-72B7-446B-A657-5DF60E87FFA0}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{DAA2525D-72B7-446B-A657-5DF60E87FFA0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{047F2926-AC5B-4892-8239-25D33EA9E57E}"
 EndProject

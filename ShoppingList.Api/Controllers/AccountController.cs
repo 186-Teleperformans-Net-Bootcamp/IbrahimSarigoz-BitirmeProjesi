@@ -1,90 +1,90 @@
-﻿//using JwtToken.Data;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using ShoppingList.Identity.Models;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
+﻿////using JwtToken.Data;
+//using Microsoft.AspNetCore.Http;
+//using Microsoft.AspNetCore.Identity;
+//using Microsoft.AspNetCore.Mvc;
+//using Microsoft.IdentityModel.Tokens;
+//using ShoppingList.Identity.Models;
+//using System.IdentityModel.Tokens.Jwt;
+//using System.Security.Claims;
+//using System.Text;
 
-namespace ShoppingList.Controllers
-{
-
-
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AccountController : ControllerBase
-    {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly IConfiguration _configuration;
-        public AccountController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration) =>
-            (_userManager, _roleManager, _configuration) = (userManager, roleManager, configuration);
-
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginModel login)
-        {
-            List<Claim> claims = new List<Claim>();
-            var user = await _userManager.FindByEmailAsync(login.Email);
-            if (user == null) throw new Exception("");
-
-            var result = await _userManager.CheckPasswordAsync(user, login.Password);
-            if (result)
-            {
-
-                var roles = await _userManager.GetRolesAsync(user);
-                foreach (var role in roles)
-                {
-                    claims.Add(new Claim(ClaimTypes.Role, role));
-                }
-
-                claims.Add(new Claim(ClaimTypes.Name, user.Email));
-                claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
-
-                var token = GetToken(claims);
-
-                var handler = new JwtSecurityTokenHandler();
-                string jwt = handler.WriteToken(token);
-
-                return Ok(new
-                {
-                    token = jwt,
-                    expiration = token.ValidTo
-                });
-            }
-
-            return Unauthorized();
-        }
+//namespace ShoppingList.Controllers
+//{
 
 
-        private JwtSecurityToken GetToken(List<Claim> claims)
-        {
+//    [Route("api/[controller]")]
+//    [ApiController]
+//    public class AccountController : ControllerBase
+//    {
+//        private readonly UserManager<AppUser> _userManager;
+//        private readonly RoleManager<IdentityRole> _roleManager;
+//        private readonly IConfiguration _configuration;
+//        public AccountController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, IConfiguration configuration) =>
+//            (_userManager, _roleManager, _configuration) = (userManager, roleManager, configuration);
 
-            var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
+//        [HttpPost("login")]
+//        public async Task<IActionResult> Login([FromBody] LoginModel login)
+//        {
+//            List<Claim> claims = new List<Claim>();
+//            var user = await _userManager.FindByEmailAsync(login.Email);
+//            if (user == null) throw new Exception("");
 
-            var token = new JwtSecurityToken(
+//            var result = await _userManager.CheckPasswordAsync(user, login.Password);
+//            if (result)
+//            {
 
-                 signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256),
-                 issuer: _configuration["JWT:Issuer"],
-                 audience: _configuration["JWT:Audience"],
-                 expires: DateTime.Now.AddDays(1),
-                 claims: claims
-                );
+//                var roles = await _userManager.GetRolesAsync(user);
+//                foreach (var role in roles)
+//                {
+//                    claims.Add(new Claim(ClaimTypes.Role, role));
+//                }
 
-            return token;
+//                claims.Add(new Claim(ClaimTypes.Name, user.Email));
+//                claims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
-        }
+//                var token = GetToken(claims);
 
-    }
+//                var handler = new JwtSecurityTokenHandler();
+//                string jwt = handler.WriteToken(token);
+
+//                return Ok(new
+//                {
+//                    token = jwt,
+//                    expiration = token.ValidTo
+//                });
+//            }
+
+//            return Unauthorized();
+//        }
 
 
+//        private JwtSecurityToken GetToken(List<Claim> claims)
+//        {
+
+//            var signinKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JWT:Key"]));
+
+//            var token = new JwtSecurityToken(
+
+//                 signingCredentials: new SigningCredentials(signinKey, SecurityAlgorithms.HmacSha256),
+//                 issuer: _configuration["JWT:Issuer"],
+//                 audience: _configuration["JWT:Audience"],
+//                 expires: DateTime.Now.AddDays(1),
+//                 claims: claims
+//                );
+
+//            return token;
+
+//        }
+
+//    }
 
 
 
-    public class LoginModel
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
-}
+
+
+//    public class LoginModel
+//    {
+//        public string Email { get; set; }
+//        public string Password { get; set; }
+//    }
+//}
