@@ -18,7 +18,7 @@ namespace ShoppingList.Domain.Entities
 
         public bool IsItCompleted { get; set; }
 
-        public List<Item> Items { get; set; }
+        public ICollection<Item> Items { get; set; }
 
 
     }

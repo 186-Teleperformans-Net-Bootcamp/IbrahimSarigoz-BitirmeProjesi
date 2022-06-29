@@ -11,7 +11,6 @@ namespace ShoppingList.Domain.Entities
     {
         public string ItemName { get; set; }
 
-
         public bool ItemReceived { get; set; } //Has the item been received? 
 
         public int Amount { get; set; }
