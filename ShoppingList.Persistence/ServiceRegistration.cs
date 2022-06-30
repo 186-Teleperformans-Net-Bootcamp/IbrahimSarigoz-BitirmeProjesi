@@ -19,18 +19,24 @@ namespace ShoppingList.Persistence
 
         public static void AddPersistanceServices(this IServiceCollection services )
         {
-            services.AddDbContext<ShoppingListDbContext>(options => options.UseSqlServer(Configuration.ConnectionString),ServiceLifetime.Singleton);
+            services.AddDbContext<ShoppingListDbContext>(options =>
+            {
+                options.UseSqlServer(Configuration.ConnectionString);
+                options.UseLazyLoadingProxies();
+                
+                
+                });
 
             services.AddSingleton<IShopListService, ShopListService>();
            
-            services.AddSingleton<ICategoryReadRepository, CategoryReadRepository>();
-            services.AddSingleton<ICategoryWriteRepository, CategoryWriteRepository>();
+            services.AddScoped<ICategoryReadRepository, CategoryReadRepository>();
+            services.AddScoped<ICategoryWriteRepository, CategoryWriteRepository>();
 
-            services.AddSingleton<IItemReadRepository, ItemReadRepository>();
-            services.AddSingleton<IItemWriteRepository, ItemWriteRepository>();
+            services.AddScoped<IItemReadRepository, ItemReadRepository>();
+            services.AddScoped<IItemWriteRepository, ItemWriteRepository>();
 
-            services.AddSingleton<IShopListReadRepository, ShopListReadRepository>();
-            services.AddSingleton<IShopListWriteRepository, ShopListWriteRepository>();
+            services.AddScoped<IShopListReadRepository, ShopListReadRepository>();
+            services.AddScoped<IShopListWriteRepository, ShopListWriteRepository>();
 
 
             
