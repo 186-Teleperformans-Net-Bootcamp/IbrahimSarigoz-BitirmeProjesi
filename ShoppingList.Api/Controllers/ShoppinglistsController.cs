@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Abstractions;
+using ShoppingList.Application.Repositories;
 using ShoppingList.Domain.Entities;
 
 namespace ShoppingList.Api.Controllers
@@ -9,37 +10,66 @@ namespace ShoppingList.Api.Controllers
     [ApiController]
     public class ShoppinglistsController : ControllerBase
     {
+        readonly private IShopListWriteRepository _shopListWriteRepository;
+        readonly private IShopListReadRepository _shopListReadRepository;
 
-        private readonly IShopListService _shopListService;
 
-        public ShoppinglistsController(IShopListService shopListService)
+        public ShoppinglistsController(IShopListWriteRepository shopListWriteRepository, IShopListReadRepository shopListReadRepository)
         {
-            _shopListService = shopListService;
+            _shopListWriteRepository = shopListWriteRepository;
+            _shopListReadRepository = shopListReadRepository;
         }
-
 
 
         [HttpGet]
 
-        public IActionResult GetShopLists()
+        public async void Get()
         {
+            await _shopListWriteRepository.AddRangeAsync(new()
+            {
+                new() { Id=Guid.NewGuid(),IsItCompleted=false,ListName="Hello" , Category = new Category() { Id = Guid.NewGuid(),CategoryName = " Bilgisayar "  } },
+                new() { Id = Guid.NewGuid(), IsItCompleted = false, ListName = "myName", Category = new Category() { Id = Guid.NewGuid(), CategoryName = " Bilgisayar " } },
+                new() { Id = Guid.NewGuid(), IsItCompleted = true, ListName = "Is", Category = new Category() { Id = Guid.NewGuid(), CategoryName = " Bilgisayar " } },
+                new() { Id = Guid.NewGuid(), IsItCompleted = true, ListName = "ibo", Category = new Category() { Id = Guid.NewGuid(), CategoryName = " Bilgisayar " } }
 
-            var shopLists = _shopListService.GetShopLists();
+            });
+            await  _shopListWriteRepository.SaveAsync();
 
-            return Ok(shopLists);
         }
 
 
 
 
+        //private readonly IShopListService _shopListService;
 
-        [HttpPost]
-        public IActionResult CreateShoppingList([FromBody]  ShopList list)
-        {
+        //public ShoppinglistsController(IShopListService shopListService)
+        //{
+        //    _shopListService = shopListService;
+        //}
 
-            return Ok();
 
-        }
+
+        //[HttpGet]
+
+        //public IActionResult GetShopLists()
+        //{
+
+        //    var shopLists = _shopListService.GetShopLists();
+
+        //    return Ok(shopLists);
+        //}
+
+
+
+
+
+        //[HttpPost]
+        //public IActionResult CreateShoppingList([FromBody]  ShopList list)
+        //{
+
+        //    return Ok();
+
+        //}
 
 
     }
