@@ -27,7 +27,10 @@ namespace ShoppingList.Persistence.Repositories
 
         public async Task<T> GetByIdAsync(string id) //where t yi class deseydim id ye erişemezdim ama alanı daraltıp BaseEntity e çekerek id ye erişebildim. Bu sayede reflection yapmama gerek kalmadı. 
         {
-           return await Table.FirstOrDefaultAsync(p => p.Id == Guid.Parse(id));
+            return await Table.FirstOrDefaultAsync(p => p.Id == Guid.Parse(id));
+
+            //return await Table.FindAsync(Guid.Parse(id));
+
         }
 
         public async Task<T> GetSingleAsync(Expression<Func<T, bool>> expression)
