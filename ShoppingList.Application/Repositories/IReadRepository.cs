@@ -11,13 +11,13 @@ namespace ShoppingList.Application.Repositories
     public interface IReadRepository <T>: IRepository<T>  where T:BaseEntity
     {
         // sorguda çalıştığım için Iqueryable diyorum. 
-        IQueryable<T> GetAll();
+        IQueryable<T> GetAll(bool tracking = true); 
 
-        IQueryable<T> GetWhere(Expression<Func<T,bool>> expression);
+        IQueryable<T> GetWhere(Expression<Func<T,bool>> expression, bool tracking = true);
 
-        Task<T> GetSingleAsync(Expression<Func<T, bool>> expression); // Async çalıştığı için datamızı Task olarak döndürdük. 
+        Task<T> GetSingleAsync(Expression<Func<T, bool>> expression, bool tracking = true); // Async çalıştığı için datamızı Task olarak döndürdük. 
 
-        Task<T> GetByIdAsync(string id); // ORM de Async çalıştıkları için böyle kodladım. 
+        Task<T> GetByIdAsync(string id, bool tracking = true); // ORM de Async çalıştıkları için böyle kodladım. 
 
     }
 }
