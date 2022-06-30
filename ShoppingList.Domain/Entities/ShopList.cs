@@ -10,7 +10,7 @@ namespace ShoppingList.Domain.Entities
     {
         public string ListName { get; set; }
 
-        public Category Category { get; set; }
+        public virtual Category Category { get; set; }
 
         public DateTime CreationDate { get; set; }
 
@@ -18,7 +18,7 @@ namespace ShoppingList.Domain.Entities
 
         public bool IsItCompleted { get; set; }
 
-        public ICollection<Item> Items { get; set; }
+        public virtual ICollection<Item> Items { get; set; }
 
 
     }
