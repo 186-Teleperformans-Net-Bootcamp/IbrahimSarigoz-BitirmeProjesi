@@ -58,7 +58,7 @@ namespace ShoppingList.Persistence.Repositories
         }
 
 
-
+//burda değişiklik yapılcak
         public bool Update(T model)
         {
             EntityEntry entityEntry=  Table.Update(model);
