@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Abstractions;
 using ShoppingList.Application.Repositories;
+using ShoppingList.Application.ViewModels.ShopLists;
 using ShoppingList.Domain.Entities;
+using System.Net;
 
 namespace ShoppingList.Api.Controllers
 {
@@ -19,57 +21,78 @@ namespace ShoppingList.Api.Controllers
             _shopListWriteRepository = shopListWriteRepository;
             _shopListReadRepository = shopListReadRepository;
         }
-
-
         [HttpGet]
-
-        public async void Get()
+        public async Task<IActionResult> Get()
         {
-            await _shopListWriteRepository.AddRangeAsync(new()
-            {
-                new() { Id=Guid.NewGuid(),IsItCompleted=false,ListName="Hello" , Category = new Category() { Id = Guid.NewGuid(),CategoryName = " Bilgisayar "  } },
-                new() { Id = Guid.NewGuid(), IsItCompleted = false, ListName = "myName", Category = new Category() { Id = Guid.NewGuid(), CategoryName = " Bilgisayar " } },
-                new() { Id = Guid.NewGuid(), IsItCompleted = true, ListName = "Is", Category = new Category() { Id = Guid.NewGuid(), CategoryName = " Bilgisayar " } },
-                new() { Id = Guid.NewGuid(), IsItCompleted = true, ListName = "ibo", Category = new Category() { Id = Guid.NewGuid(), CategoryName = " Bilgisayar " } }
-
-            });
-            await  _shopListWriteRepository.SaveAsync();
+            return Ok(_shopListReadRepository.GetAll());
 
         }
 
 
 
+        [HttpGet("{id}")]
 
-        //private readonly IShopListService _shopListService;
+        public async Task<IActionResult> Get(string id)
+        {
+            ShopList shopList = await _shopListReadRepository.GetByIdAsync(id);
 
-        //public ShoppinglistsController(IShopListService shopListService)
-        //{
-        //    _shopListService = shopListService;
-        //}
-
+            return Ok(shopList);
 
 
-        //[HttpGet]
-
-        //public IActionResult GetShopLists()
-        //{
-
-        //    var shopLists = _shopListService.GetShopLists();
-
-        //    return Ok(shopLists);
-        //}
+        }
 
 
 
+        [HttpPost]
+        public async Task<IActionResult> Post(VM_Create_ShopList model)
+        {
+            await _shopListWriteRepository.AddAsync(new()
+            {
+                CreationDate = DateTime.Now,
+                Category = model.Category,
+                IsItCompleted = model.IsItCompleted,
+                Items = model.Items,
+                ListName = model.ListName
+            });
+            await _shopListWriteRepository.SaveAsync();
+
+            return StatusCode((int)HttpStatusCode.Created);
+        }
 
 
-        //[HttpPost]
-        //public IActionResult CreateShoppingList([FromBody]  ShopList list)
-        //{
+        [HttpPut]
 
-        //    return Ok();
 
-        //}
+        public async Task<IActionResult> Put(VM_Update_ShopList model)
+        {
+            ShopList shopList = await _shopListReadRepository.GetByIdAsync(model.Id);
+
+            shopList.Items = model.Items;
+            shopList.ListName = model.ListName;
+            shopList.IsItCompleted = model.IsItCompleted;
+            shopList.Category = model.Category;
+
+            await _shopListWriteRepository.SaveAsync();
+
+            return Ok();
+        }
+
+
+
+
+
+        //bu id de list yoksa ne döneceğim onuda düşünmeliyim burda
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            await _shopListWriteRepository.RemoveAsync(id);
+            await _shopListWriteRepository.SaveAsync();
+
+
+            return Ok();
+        }
+
 
 
     }
