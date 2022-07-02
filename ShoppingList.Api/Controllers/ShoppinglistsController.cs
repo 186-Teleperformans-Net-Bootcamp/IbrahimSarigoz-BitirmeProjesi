@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Abstractions;
 using ShoppingList.Application.Repositories;
+using ShoppingList.Application.RequestParamaters;
 using ShoppingList.Application.ViewModels.ShopLists;
 using ShoppingList.Domain.Entities;
 using System.Net;
@@ -22,9 +23,30 @@ namespace ShoppingList.Api.Controllers
             _shopListReadRepository = shopListReadRepository;
         }
         [HttpGet]
-        public async Task<IActionResult> Get()
+        public async Task<IActionResult> Get([FromQuery] Pagination pagination)
         {
-            return Ok(_shopListReadRepository.GetAll());
+
+            // client ayrıca totalcountuda bilmeli 
+            var totalCount = _shopListReadRepository.GetAll(false).Count();
+
+
+            var shopLists = _shopListReadRepository.GetAll(false).Skip(pagination.Page * pagination.Size).Take(pagination.Size).Select(p => new
+            {
+                p.ListName,
+                p.IsItCompleted,
+                p.Items,
+                p.Category,
+                p.CreationDate
+
+            });
+
+
+            return Ok(new
+            {
+                totalCount,
+                shopLists
+
+            });
 
         }
 
