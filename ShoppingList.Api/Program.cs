@@ -1,5 +1,8 @@
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using ShoppingList.Application.Validators.ShopLists;
+using ShoppingList.Infrastructure.Filters;
 using ShoppingList.Persistence;
 using System.Text;
 
@@ -12,7 +15,8 @@ var configuration = builder.Configuration;
 builder.Services.AddPersistanceServices();
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options=> options.Filters.Add<ValidationFilter>())
+    .AddFluentValidation(configuration=>configuration.RegisterValidatorsFromAssemblyContaining<CreateShopListValidator>());
 
 
 
