@@ -1,6 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Abstractions;
+using ShoppingList.Application.Features.Commands.CreateShoppingList;
+using ShoppingList.Application.Features.Commands.RemoveShoppingList;
+using ShoppingList.Application.Features.Commands.UpdateShoppingList;
+using ShoppingList.Application.Features.Queries.GetAllShopList;
+using ShoppingList.Application.Features.Queries.GetByIdShopList;
 using ShoppingList.Application.Repositories;
 using ShoppingList.Application.RequestParamaters;
 using ShoppingList.Application.ViewModels.ShopLists;
@@ -16,85 +22,51 @@ namespace ShoppingList.Api.Controllers
         readonly private IShopListWriteRepository _shopListWriteRepository;
         readonly private IShopListReadRepository _shopListReadRepository;
 
-
-        public ShoppinglistsController(IShopListWriteRepository shopListWriteRepository, IShopListReadRepository shopListReadRepository)
+        readonly IMediator _mediator;
+        public ShoppinglistsController(IShopListWriteRepository shopListWriteRepository, IShopListReadRepository shopListReadRepository, IMediator mediator)
         {
             _shopListWriteRepository = shopListWriteRepository;
             _shopListReadRepository = shopListReadRepository;
+            _mediator = mediator;
         }
         [HttpGet]
-        public async Task<IActionResult> Get([FromQuery] Pagination pagination)
+        public async Task<IActionResult> Get([FromQuery] GetAllShopListQueryRequest getAllShopListQueryRequest)
         {
+            GetAllShopListQueryResponse response = await _mediator.Send(getAllShopListQueryRequest);
 
-            // client ayrıca totalcountuda bilmeli 
-            var totalCount = _shopListReadRepository.GetAll(false).Count();
-
-
-            var shopLists = _shopListReadRepository.GetAll(false).Skip(pagination.Page * pagination.Size).Take(pagination.Size).Select(p => new
-            {
-                p.ListName,
-                p.IsItCompleted,
-                p.Items,
-                p.Category,
-                p.CreationDate
-
-            });
-
-
-            return Ok(new
-            {
-                totalCount,
-                shopLists
-
-            });
+            return Ok(response);
+           
 
         }
-
-
-
-        [HttpGet("{id}")]
-
-        public async Task<IActionResult> Get(string id)
-        {
-            ShopList shopList = await _shopListReadRepository.GetByIdAsync(id);
-
-            return Ok(shopList);
-
-
-        }
-
-
 
         [HttpPost]
-        public async Task<IActionResult> Post(VM_Create_ShopList model)
+        public async Task<IActionResult> Post([FromBody] CreateShoppingListCommandRequest request)
         {
-            await _shopListWriteRepository.AddAsync(new()
-            {
-                CreationDate = DateTime.Now,
-                Category = model.Category,
-                IsItCompleted = model.IsItCompleted,
-                Items = model.Items,
-                ListName = model.ListName
-            });
-            await _shopListWriteRepository.SaveAsync();
+            await _mediator.Send(request);
 
             return StatusCode((int)HttpStatusCode.Created);
         }
 
 
+        [HttpGet("{Id}")]
+
+        public async Task<IActionResult> Get([FromRoute]GetByIdShopListQueryRequest request)
+        {
+            GetByIdShopListQueryResponse response = await _mediator.Send(request); 
+            return Ok(response);
+
+        }
+
+
+
+        
+
         [HttpPut]
 
-
-        public async Task<IActionResult> Put(VM_Update_ShopList model)
+        public async Task<IActionResult> Put([FromBody]UpdateShoppingListCommandRequest request)
         {
-            ShopList shopList = await _shopListReadRepository.GetByIdAsync(model.Id);
 
-            shopList.Items = model.Items;
-            shopList.ListName = model.ListName;
-            shopList.IsItCompleted = model.IsItCompleted;
-            shopList.Category = model.Category;
-
-            await _shopListWriteRepository.SaveAsync();
+            UpdateShoppingListCommandResponse response = await _mediator.Send(request);
 
             return Ok();
         }
@@ -105,12 +77,11 @@ namespace ShoppingList.Api.Controllers
 
         //bu id de list yoksa ne döneceğim onuda düşünmeliyim burda
 
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        [HttpDelete("{Id}")]
+        public async Task<IActionResult> Delete([FromRoute] RemoveShoppingListCommandRequest request)
         {
-            await _shopListWriteRepository.RemoveAsync(id);
-            await _shopListWriteRepository.SaveAsync();
 
+            RemoveShoppingListCommandResponse response = await _mediator.Send(request);
 
             return Ok();
         }
