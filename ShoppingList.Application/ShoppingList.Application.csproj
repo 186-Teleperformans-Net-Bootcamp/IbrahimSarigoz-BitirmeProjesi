@@ -7,8 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Features\Commands\CreateShoppingList\" />
-    <Folder Include="Features\Queries\" />
     <Folder Include="Validators\Categories\" />
     <Folder Include="Validators\Items\" />
   </ItemGroup>

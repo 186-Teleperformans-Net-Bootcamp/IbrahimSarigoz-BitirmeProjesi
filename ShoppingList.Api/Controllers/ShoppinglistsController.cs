@@ -9,7 +9,7 @@ using ShoppingList.Application.Features.Queries.GetAllShopList;
 using ShoppingList.Application.Features.Queries.GetByIdShopList;
 using ShoppingList.Application.Repositories;
 using ShoppingList.Application.RequestParamaters;
-using ShoppingList.Application.ViewModels.ShopLists;
+
 using ShoppingList.Domain.Entities;
 using System.Net;
 
