@@ -11,6 +11,7 @@ using ShoppingList.Persistence.Contexts;
 using Microsoft.Extensions.Configuration;
 using ShoppingList.Application.Repositories;
 using ShoppingList.Persistence.Repositories;
+using ShoppingList.Domain.Entities.Identity;
 
 namespace ShoppingList.Persistence
 {
@@ -26,6 +27,20 @@ namespace ShoppingList.Persistence
                 
                 
                 });
+
+
+            services.AddIdentity<User,Role>(options=>
+            {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+
+
+
+            }).AddEntityFrameworkStores<ShoppingListDbContext>();
+
 
             services.AddSingleton<IShopListService, ShopListService>();
            
