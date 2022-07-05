@@ -1,5 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ShoppingList.Domain.Entities;
+using ShoppingList.Domain.Entities.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingList.Persistence.Contexts
 {
-    public class ShoppingListDbContext : DbContext
+    public class ShoppingListDbContext : IdentityDbContext<User,Role,string>
     {
         public ShoppingListDbContext(DbContextOptions options) : base(options)
         {

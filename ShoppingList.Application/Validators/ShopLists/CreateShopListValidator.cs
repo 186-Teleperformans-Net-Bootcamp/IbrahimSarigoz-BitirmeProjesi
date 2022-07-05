@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
-using ShoppingList.Application.ViewModels.ShopLists;
+using ShoppingList.Application.Features.Commands.CreateShoppingList;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ShoppingList.Application.Validators.ShopLists
 {
-    public class CreateShopListValidator : AbstractValidator<VM_Create_ShopList>
+    public class CreateShopListValidator : AbstractValidator<CreateShoppingListCommandRequest>
     {
         public CreateShopListValidator()
         {
