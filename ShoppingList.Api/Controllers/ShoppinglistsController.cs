@@ -1,7 +1,9 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ShoppingList.Application.Abstractions;
+using ShoppingList.Application.Features.Commands.AddItemToShopList;
 using ShoppingList.Application.Features.Commands.CreateShoppingList;
 using ShoppingList.Application.Features.Commands.RemoveShoppingList;
 using ShoppingList.Application.Features.Commands.UpdateShoppingList;
@@ -17,6 +19,7 @@ namespace ShoppingList.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[Authorize(AuthenticationSchemes = "Admin")]
     public class ShoppinglistsController : ControllerBase
     {
         readonly private IShopListWriteRepository _shopListWriteRepository;
@@ -29,13 +32,15 @@ namespace ShoppingList.Api.Controllers
             _shopListReadRepository = shopListReadRepository;
             _mediator = mediator;
         }
+
+
         [HttpGet]
+        
         public async Task<IActionResult> Get([FromQuery] GetAllShopListQueryRequest getAllShopListQueryRequest)
         {
             GetAllShopListQueryResponse response = await _mediator.Send(getAllShopListQueryRequest);
 
             return Ok(response);
-           
 
         }
 
@@ -48,32 +53,42 @@ namespace ShoppingList.Api.Controllers
         }
 
 
-        [HttpGet("{Id}")]
 
-        public async Task<IActionResult> Get([FromRoute]GetByIdShopListQueryRequest request)
+        [HttpGet("{Id}")]
+        [ResponseCache(Duration = 600,VaryByQueryKeys = new string [] {"Id"})]
+        public async Task<IActionResult> Get([FromRoute] GetByIdShopListQueryRequest request)
         {
-            GetByIdShopListQueryResponse response = await _mediator.Send(request); 
+            GetByIdShopListQueryResponse response = await _mediator.Send(request);
             return Ok(response);
 
         }
 
 
+        //[HttpPost("{ShoppingListId}")]
 
-        
+        //public  async Task<IActionResult> Put([FromBody] AddItemToShopListCommandRequest request)
+        //{
+        //    await _mediator.Send(request); 
+
+            
+
+        //    //await _shopListWriteRepository.SaveAsync();
+
+
+        //    return Ok();
+
+
+        //}
 
         [HttpPut]
 
-        public async Task<IActionResult> Put([FromBody]UpdateShoppingListCommandRequest request)
+        public async Task<IActionResult> Put([FromBody] UpdateShoppingListCommandRequest request)
         {
 
             UpdateShoppingListCommandResponse response = await _mediator.Send(request);
 
             return Ok();
         }
-
-
-
-
 
         //bu id de list yoksa ne döneceğim onuda düşünmeliyim burda
 
