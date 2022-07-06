@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using ShoppingList.Application;
 using ShoppingList.Application.Validators.ShopLists;
+using ShoppingList.Identity.Services;
 using ShoppingList.Infrastructure.Filters;
 using ShoppingList.Persistence;
 using System.Text;
@@ -10,7 +11,7 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 var configuration = builder.Configuration;
-
+builder.Services.AddResponseCaching();
 
 //persistence içindeki tüm servisler IoC ye eklenmiþ oldu. 
 builder.Services.AddPersistanceServices();
@@ -21,7 +22,7 @@ builder.Services.AddControllers(options=> options.Filters.Add<ValidationFilter>(
 
 
 builder.Services.AddApplicationServices();
-
+builder.Services.AddIdentityServices();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -59,6 +60,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseAuthorization();
+
+app.UseResponseCaching();
 
 app.MapControllers();
 
