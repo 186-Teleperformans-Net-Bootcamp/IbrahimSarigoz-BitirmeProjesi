@@ -64,21 +64,21 @@ namespace ShoppingList.Api.Controllers
         }
 
 
-        //[HttpPost("{ShoppingListId}")]
+        [HttpPost("AddItem")]
 
-        //public  async Task<IActionResult> Put([FromBody] AddItemToShopListCommandRequest request)
-        //{
-        //    await _mediator.Send(request); 
-
-            
-
-        //    //await _shopListWriteRepository.SaveAsync();
+        public async Task<IActionResult> Put([FromBody] AddItemToShopListCommandRequest request)
+        {
+            await _mediator.Send(request);
 
 
-        //    return Ok();
+
+            //await _shopListWriteRepository.SaveAsync();
 
 
-        //}
+            return Ok();
+
+
+        }
 
         [HttpPut]
 
