@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ShoppingList.Application\ShoppingList.Application.csproj" />
+    <ProjectReference Include="..\ShoppingList.Identity\ShoppingList.Identity.csproj" />
     <ProjectReference Include="..\ShoppingList.Infrastructure\ShoppingList.Infrastructure.csproj" />
     <ProjectReference Include="..\ShoppingList.Persistence\ShoppingList.Persistence.csproj" />
   </ItemGroup>

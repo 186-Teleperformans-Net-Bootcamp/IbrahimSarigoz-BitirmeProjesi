@@ -24,4 +24,8 @@
     <ProjectReference Include="..\ShoppingList.Application\ShoppingList.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Filters\" />
+  </ItemGroup>
+
 </Project>
