@@ -2,13 +2,13 @@
 # ShoppingList Api
 # INTRODUCTION
 
-ShoppingList is a simple API allowing users to:-
-•	Register\n
-•	Login
-•	Create Shopping Lists & Items
-•	View Shopping Lists
-•	Edit Shopping Lists & Items
-•	DeleteShopping Lists & Items
+ShoppingList is a simple API allowing users to:-<br />
+•	Register<br />
+•	Login<br />
+•	Create Shopping Lists & Items<br />
+•	View Shopping Lists<br />
+•	Edit Shopping Lists & Items<br />
+•	DeleteShopping Lists & Items<br />
 
 # Register
 Represents User Registration with
