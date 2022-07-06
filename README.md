@@ -3,7 +3,7 @@
 # INTRODUCTION
 
 ShoppingList is a simple API allowing users to:-
-•	Register
+•	Register\n
 •	Login
 •	Create Shopping Lists & Items
 •	View Shopping Lists
