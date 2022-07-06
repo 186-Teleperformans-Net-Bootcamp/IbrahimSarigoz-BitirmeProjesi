@@ -64,10 +64,10 @@ Add the item to  the Shopping List
 
 # Comment 
 
-I wrote some code for role based user login. I have completed the admin login but not the user part. 
-I set the units using enum. 
-Piece 0, kg 1, lt 2, gram 3.
-I used caching in the get function using id.
+I wrote some code for role based user login. I have completed the admin login but not the user part. <br />
+I set the units using enum. <br />
+Piece 0, kg 1, lt 2, gram 3.<br />
+I used caching in the get function using id.<br />
 Due to the problems I experienced at some points, I could not prepare an efficient project, but I tried to develop a project according to Solid principles by following the design patterns as much as I could.
 
 
